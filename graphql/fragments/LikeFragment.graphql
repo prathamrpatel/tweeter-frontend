@@ -1,0 +1,4 @@
+fragment LikeFragment on Like {
+  postId
+  userId
+}

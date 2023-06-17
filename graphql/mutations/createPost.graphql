@@ -1,0 +1,7 @@
+mutation CreatePost($body: String!) {
+  createPost(body: $body) {
+    post {
+      ...PostFragment
+    }
+  }
+}

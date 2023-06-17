@@ -1,0 +1,8 @@
+query GetPostsByUser($input: PaginatedPostsInput!) {
+  getPostsByUser(input: $input) {
+    posts {
+      ...PostFragment
+    }
+    hasMore
+  }
+}

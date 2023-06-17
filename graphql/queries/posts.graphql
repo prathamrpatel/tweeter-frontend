@@ -1,0 +1,8 @@
+query Posts($input: PaginatedPostsInput!) {
+  posts(input: $input) {
+    posts {
+      ...PostFragment
+    }
+    hasMore
+  }
+}

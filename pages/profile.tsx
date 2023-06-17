@@ -1,14 +1,14 @@
-import { Flex } from '@chakra-ui/react';
-import InfiniteScroll from 'react-infinite-scroller';
+import type { NextPage } from 'next';
 import Post from '../components/Post';
-import PostInput from '../components/PostInput';
 import SidebarWithHeader from '../components/SidebarWithHeader';
-import { usePostsQuery } from '../generated/graphql';
+import { useGetPostsByUserQuery } from '../generated/graphql';
 import { useIsAuth } from '../util/useIsAuth';
+import InfiniteScroll from 'react-infinite-scroller';
+import { Box, Flex } from '@chakra-ui/react';
 
-export default function Home() {
+const Profile: NextPage = () => {
   useIsAuth();
-  const { data, fetchMore } = usePostsQuery({
+  const { data, fetchMore } = useGetPostsByUserQuery({
     variables: {
       input: {
         take: 20,
@@ -17,13 +17,12 @@ export default function Home() {
     },
   });
 
-  if (!data?.posts) {
+  if (!data?.getPostsByUser) {
     return <div>Posts could not be fetched</div>;
   }
 
   return (
     <SidebarWithHeader>
-      <PostInput />
       <InfiniteScroll
         pageStart={0}
         loadMore={() =>
@@ -34,25 +33,33 @@ export default function Home() {
                 input: {
                   take: 20,
                   cursor:
-                    data.posts.posts[data.posts.posts.length - 1].createdAt,
+                    data.getPostsByUser.posts[
+                      data.getPostsByUser.posts.length - 1
+                    ].createdAt,
                 },
               },
             });
           }, 250)
         }
-        hasMore={data.posts.hasMore}
+        hasMore={data.getPostsByUser.hasMore}
         loader={
           <div className="loader" key={0}>
             Loading ...
           </div>
         }
       >
-        <Flex direction="column" align="center">
-          {data.posts.posts.map((post) => (
-            <Post key={post.id} post={post} />
-          ))}
-        </Flex>
+        {data.getPostsByUser.posts.length === 0 ? (
+          <Flex justify="center">You have not posted anything yet</Flex>
+        ) : (
+          <Flex direction="column" align="center">
+            {data.getPostsByUser.posts.map((post) => (
+              <Post key={post.id} post={post} />
+            ))}
+          </Flex>
+        )}
       </InfiniteScroll>
     </SidebarWithHeader>
   );
-}
+};
+
+export default Profile;

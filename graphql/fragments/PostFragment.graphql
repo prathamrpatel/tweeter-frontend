@@ -1,0 +1,16 @@
+fragment PostFragment on Post {
+  id
+  body
+  authorId
+  author {
+    ...UserFragment
+  }
+  likes {
+    ...LikeFragment
+  }
+  comments {
+    ...CommentFragment
+  }
+  createdAt
+  updatedAt
+}

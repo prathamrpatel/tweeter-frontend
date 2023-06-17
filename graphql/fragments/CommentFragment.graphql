@@ -1,0 +1,11 @@
+fragment CommentFragment on Comment {
+  id
+  postId
+  authorId
+  body
+  createdAt
+  updatedAt
+  author {
+    ...UserFragment
+  }
+}
